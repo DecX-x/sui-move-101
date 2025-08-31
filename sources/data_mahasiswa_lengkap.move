@@ -1,5 +1,6 @@
 module kampus::data_mahasiswa_lengkap {
     use std::string::String;
+    use sui::transfer;
     
     // Struct lengkap mahasiswa
     public struct Mahasiswa has key {
@@ -20,8 +21,8 @@ module kampus::data_mahasiswa_lengkap {
         jurusan: String,
         umur: u8,
         ctx: &mut TxContext
-    ): Mahasiswa {
-        Mahasiswa {
+    ) {
+        let mahasiswa = Mahasiswa {
             id: object::new(ctx),
             nama,
             nim,
@@ -30,7 +31,8 @@ module kampus::data_mahasiswa_lengkap {
             total_sks: 0,
             aktif: true,
             lulus: false,
-        }
+        };
+        transfer::transfer(mahasiswa, tx_context::sender(ctx));
     }
     
     // Fungsi untuk ambil mata kuliah (tambah SKS)
